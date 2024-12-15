@@ -353,13 +353,13 @@ def acesso():
             time.sleep(0.5)
             menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
             if menu == 1:
-                
-                menu = int(input("1- Exibir dados do perfil \n2- Marcar atendimento \n3- Logout\n4- Consultar atendimentos:\nR: "))
-            if menu == 1:
                 print ("")
-            elif menu == 2:
-                marcarAtendimento()
-            
+            elif menu == 2:# Primeiro Try e Except, esse serve para alertar que o atendimento ta off ainda
+                try:
+                    marcarAtendimento()
+                except TypeError:
+                    print("\nParece que ainda não é possível marcar o atendimento ainda...\n")
+                    saida()
             elif menu == 3:
                 pass
             elif menu == 4:
