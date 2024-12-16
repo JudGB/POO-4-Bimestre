@@ -8,8 +8,6 @@ import time
 # Luiz Felipe Macedo Alencar de Menezes
 # Judson Gabriel Ferreira dos Santos
 
-# Atençãaaaaaaao!!!!!!!!!!!!!!!!!! ----> Confirmar usuario (Arrumar) / fazer a interface para cada carinha la
-
 usuarios = []
 dias = []
 
