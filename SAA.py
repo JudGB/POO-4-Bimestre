@@ -1,4 +1,6 @@
-from classes import *
+from Classes import *
+from Exceptions import *
+from string import ascii_letters
 import time
 
 # 2º Ano B Vespertino Informática
@@ -10,15 +12,16 @@ import time
 
 usuarios = []
 dias = []
+letras = ascii_letters + " áéíóúôâãõ"
 
 # Home
 def home():
-    option = input("\n1- Login | 2- Registrar | 0- Sair: ")
-    if option == "1":
+    option = int(input("\n1- Login | 2- Registrar | 0- Sair: "))
+    if option == 1:
         acesso()
-    elif option == "2":
+    elif option == 2:
         registrar()
-    elif option == "0":
+    elif option == 0:
         print("Saindo... Até a próxima!")
         exit()
     else:
@@ -26,7 +29,7 @@ def home():
         home()
 
 # Função de verificão do dia
-def verificacaoDIA(data):  # função para verificar se pro dia digitado já existe um atendimento // felipe w/ celso
+def verificacaoDIA(data):
     for datas in dias:
         if datas == data:
             return True
@@ -71,18 +74,22 @@ def escolher_curso():
     print("2- Química")
     print("3- Eletrotécnica")
     print("4- Edificações")
-    opcao = input("Escolha de 1-4: ")
+    try:
+        opcao = int(input("Escolha de 1-4: "))
+        if opcao == 1:
+            return "Informática"
+        elif opcao == 2:
+            return "Química"
+        elif opcao == 3:
+            return "Eletrotécnica"
+        elif opcao == 4:
+            return "Edificações"
+        else:
+            print("Insira uma opção válida")
+            return escolher_curso()
 
-    if opcao == "1":
-        return "Informática"
-    elif opcao == "2":
-        return "Química"
-    elif opcao == "3":
-        return "Eletrotécnica"
-    elif opcao == "4":
-        return "Edificações"
-    else:
-        print("Insira uma opção válida")
+    except:
+        print("Insira um valor válido")
         return escolher_curso()
 
 
@@ -205,16 +212,26 @@ def registrar():
 # CPF
     while True:
         try:
-            cpf = int(input("Digite seu CPF: "))
+            cpf = str(input("Digite seu CPF: (no formato XXX.XXX.XXX-XX): "))
             if verificacaoCPF(cpf):
                 print("\nCPF já registrado. Tente novamente.\n")
                 continue
+        
+            cpfNums = cpf.replace('.', '').replace('-', '')
+            if not cpfNums.isdigit():
+                raise ValueError
+            
+            if len(cpfNums) != 11:
+                raise TamanhoCpf
 
-            else:
+            else:  
                 break
 
-        except:
-            print("\nInsira um valor válido.\n")
+        except TamanhoCpf:
+            print ("Cpf deve conter 11 números")
+
+        except ValueError:
+            print ("O Cpf deve conter apenas números.")
 
 # Email
     while True:
@@ -390,13 +407,15 @@ def acesso():
 # Saída
 def saida():
     print("\nDigite 0 para sair ou 1 para voltar ao menu principal.")
-    escolha = input("Escolha uma opção: ")
-    if escolha == "1":
-        home()
-    elif escolha == "0":
-        print("Saindo... Até a próxima!")
-        exit()
-    else:
+    escolha = int(input("Escolha uma opção: "))
+    try:
+        if escolha == 1:
+            home()
+        elif escolha == 0:
+            print("Saindo... Até a próxima!")
+            exit()
+
+    except:
         print("Escolha uma opção válida.")
         saida()
 

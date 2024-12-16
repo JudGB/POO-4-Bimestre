@@ -1,0 +1,2 @@
+class TamanhoCpf(Exception):
+    pass
