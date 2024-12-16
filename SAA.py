@@ -56,6 +56,11 @@ def verificacaoCPF(cpf):
         if user["objeto"].getCpf() == cpf:
             return True
     return False
+    """for user in usuarios:
+        if user["tipo"] == "2" and user["objeto"].getCpf() == cpf:
+            return True
+    return False"""
+
 
 
 # Função de verificação da matrícula
@@ -260,6 +265,7 @@ def registrar():
             print("insira uma Opcção!")
 
 # Usuário
+    
     usuario = input("\nDigite seu usuário: ")
     for user in usuarios:
         if user["usuario"] == usuario:
@@ -372,18 +378,39 @@ def acesso():
             print(f"Olá, {tipo_usuario} {nome_pessoa} ")
             time.sleep(0.5)
             menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
-            if menu == 5:
-                exit()
+            if menu == 1:
+                print("Perfil") #Exibir dados do perfil
+            elif menu == 2:
+                marcarAtendimento() #Marcar atendimento
+            elif menu == 3:
+                print("Consultar atendimento") #Consultar atendimentos
+            elif menu ==4:
+                acesso()
+            elif menu == 5:
+                saida()
+            
 
 # Acesso Administrador
-        elif dados_usuario["tipo"] == "1":
+        elif dados_usuario["tipo"] == "3":
             nome_pessoa = dados_usuario["objeto"].getNome()
             print("Login realizado!\n")
             print(f"Olá, {tipo_usuario} {nome_pessoa} ")
             time.sleep(0.5)
-            menu = int(input("1 -  \n2- Consultar atendimentos: \n3-  \n\nR: "))
-            if menu == 1:
-                print ("asdasd")
+            while True:
+                try: #Esse try serve para aceitar só numeros no menu do ADM
+                    menu = int(input("1 -  \n2- Consultar atendimentos: \n3-  \n\nR: "))
+                    if menu == 1:
+                        print ("asdasd")
+                    elif menu == 2:
+                        print ("asdasd")
+                    elif menu == 3:
+                        print ("asdasd")
+                    elif menu == 4:
+                        acesso()
+                    else:
+                        saida()
+                except:
+                    print("Insira numeros!")
 
     else:
         print("\nUsuário ou senha incorretos.")
