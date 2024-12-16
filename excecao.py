@@ -1,0 +1,2 @@
+class TamanhoNome(Exception):
+    pass

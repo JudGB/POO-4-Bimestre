@@ -1,5 +1,7 @@
 from classes import *
 import time
+from string import ascii_letters
+from excecao import *
 
 # 2º Ano B Vespertino Informática
 # Alunos:
@@ -12,6 +14,7 @@ import time
 
 usuarios = []
 dias = []
+validos = ascii_letters + ' áéíóúôâãõ'
 
 # Home
 def home():
@@ -67,7 +70,7 @@ def verificar_matricula(matricula):
 
 
 # Escolha de Curso
-def escolher_curso(): #felipe
+def escolher_curso(): #felipe1
     print("\nEscolha seu curso técnico integrado:")
     print("1- Informática")
     print("2- Química")
@@ -179,6 +182,13 @@ def marcarAtendimento(aluno, professor):  # vai ter q receber o professor e o al
     professor.adicionarAtendimentos(atendimento)
     aluno.adicionarAtendimentos(atendimento)
 
+def nome(name): #def limitando a string - felipe
+    min = 4
+    if len(name) < min:
+        raise TamanhoNome
+    else:
+        return name
+
 # Registro
 def registrar():
     print("\nVocê é: 1- Aluno | 2- Professor | 3- Administrador | 0- Voltar")
@@ -192,7 +202,16 @@ def registrar():
         registrar()
 
 # Nome
-    nome = input("Digite seu nome: ")
+    while True:
+        try:
+            name = input("Digite seu nome: ")
+            if all(l in validos for l in name) and ' ' in name:
+                nome(name)
+                break
+            else:
+                print("Por favor digite um nome válido (nome e sobrenome)")
+        except TamanhoNome:
+            print('Caracteres insuficientes.')
 
 # Idade
     while True:
