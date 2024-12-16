@@ -253,6 +253,7 @@ def registrar():
 
 # Usuário
     usuario = input("\nDigite seu usuário: ")
+    
     for user in usuarios:
         if user["usuario"] == usuario:
             print("O usuário informado já existe. Tente novamente.")
@@ -319,12 +320,27 @@ def registrar():
 
 # Acesso
 def acesso():
+    if len(usuarios) <= 0:
+        print("Antes de fazer o login, é necessário fazer seu registro.")
+        print("Indo para tela de resgitro...")
+        registrar()
     time.sleep(0.5)
     print("(digite 0 se quiser retornar ao menu)")
     time.sleep(0.5)
     usuario = input("Digite seu usuário: ")
+    rsp = "usuário encontrado."
     if usuario == "0":
         home()
+    for user in usuarios:
+        if user["usuario"] != usuario:
+            print(user["usuario"],usuario)
+            rsp = "O usuário informado não existe. Tente novamente."   
+    print(rsp)
+    if rsp != "usuário encontrado.":
+        acesso()
+    else:
+        pass
+
 
     senha = input("Digite sua senha: ")
 
