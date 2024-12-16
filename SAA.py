@@ -1,21 +1,27 @@
 from classes import *
 import time
 
-usuarios = []
-dias = []
+usuarios = [] #coleção 1 
+dias = [] #coleção 2 
 
 # Home
 def home():
-    option = input("\n1- Login | 2- Registrar | 0- Sair: ")
-    if option == "1":
-        acesso()
-    elif option == "2":
-        registrar()
-    elif option == "0":
-        print("Saindo... Até a próxima!")
-        exit()
+    try:
+        option = int(input("\n1- Login | 2- Registrar | 0- Sair\nR: "))
+        if option == 1:
+            acesso()
+        elif option == 2:
+            registrar()
+        elif option == 0:
+            print("Saindo... Até a próxima!")
+            exit()
+    except:
+            if option == 0:
+                exit()
+            print("\nDigite apenas *números* inteiros de 0 a 2.")
+            home()
     else:
-        print("Escolha uma opção válida.")
+        print("Lembre-se de digitar um valor de 0 a 2.")
         home()
 
 # Função de verificão do dia
