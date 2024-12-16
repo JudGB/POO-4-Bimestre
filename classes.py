@@ -2,21 +2,6 @@ import calendar
 from datetime import *
 import time
 
-
-# Celso, seguinte:
-# 1- Na classe Atendimento, na def "editarData", ta quase tudo completo, o que tá quebrando é a questão
-# da verificação, e eu precisava ver isso com mais calma contigo.
-#
-# 2- Uma observação sobre o "consultar atendimento", tanto do professor, tanto do aluno; assim como a gnt fez
-# no login, registrando cada atributo de usuário, a gnt vai ter que fazer isso para o Atendimento também.
-# Aí, vai criar um novo objeto, sla, "atendimentoCelso = Atendimento(bla bla bla)"... aí na hora da consulta,
-# só faria o link né, entre o professor e o aluno (já que um atendimento é o atedimento do outro), só faz o
-# print desse objeto.
-#
-# 3 - Cada pessoa (aluno, adm, professor), tem que ter uma interface diferente no menu. tipo, dps do login
-# o aluno pode: fazer o atendimento e consultar o que eles tem; o professor não pode marcar, só consultar.
-# tendeu?
-
 class PessoaIFRO:  # mãe
     def __init__(self, nome: str, idade: int, cpf: int, email: str, telefone: str):
         self.__nome = nome
@@ -126,7 +111,6 @@ class Atendimento():
         self.__materia = materia
         self.__horario = horario
         self.__data = data
-        # Na linha abaixo está acontecendo a relação `trigger digger, skibidi n...`
         self.__professor = professor
         self.__aluno = aluno
 

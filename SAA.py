@@ -1,15 +1,6 @@
 from classes import *
 import time
 
-# 2º Ano B Vespertino Informática
-# Alunos:
-# André Luís Bento Ferreira
-# Celso Hector Silva Sales
-# Luiz Felipe Macedo Alencar de Menezes
-# Judson Gabriel Ferreira dos Santos
-
-# Atençãaaaaaaao!!!!!!!!!!!!!!!!!! ----> Confirmar usuario (Arrumar) / fazer a interface para cada carinha la
-
 usuarios = []
 dias = []
 
@@ -181,12 +172,13 @@ def registrar():
     print("\nVocê é: 1- Aluno | 2- Professor | 3- Administrador | 0- Voltar")
     tipo = input("Escolha uma opção: ")
 
-    if tipo == "0":
+    if tipo != "1" and tipo != "2" and tipo != "3" and tipo != "0":
+        print("Valor inválido. Escolha de 0-3.")
+        registrar()
+    elif tipo == "0":
         home()
 
-    if tipo != "1" and tipo != "2" and tipo != "3":
-        print("Valor inválido. Escolha de 1-3.")
-        registrar()
+    
 
 # Nome
     nome = input("Digite seu nome: ")
