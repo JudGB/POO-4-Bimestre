@@ -1,5 +1,5 @@
-from classes import *
-import time
+from classes import *  #importante nossas classes
+import time #utilizando a biblioteca time, para usar o método sleep
 
 usuarios = [] #coleção 1 
 dias = [] #coleção 2 
@@ -176,17 +176,22 @@ def marcarAtendimento(aluno, professor):  # vai ter q receber o professor e o al
 # Registro
 def registrar():
     print("\nVocê é: 1- Aluno | 2- Professor | 3- Administrador | 0- Voltar")
-    tipo = input("Escolha uma opção: ")
-
-    if tipo != "1" and tipo != "2" and tipo != "3" and tipo != "0":
-        print("Valor inválido. Escolha de 0-3.")
+    try:
+        tipo = int(input("Escolha uma opção: "))
+        if tipo != 1 and tipo != 2 and tipo != 3 and tipo != 0:
+            print("Valor inválido. Escolha de 0-3.")
+            registrar()
+        elif tipo == "0":
+            home()
+    except (ValueError,TypeError):
+        print("Você digitou não digitou um inteiro de 0 a 3.")
         registrar()
-    elif tipo == "0":
-        home()
+    
 
     
 
-# Nome
+# Nome 
+#felipe vai fazer o tratamento dele aqui
     nome = input("Digite seu nome: ")
 
 # Idade
@@ -258,6 +263,7 @@ def registrar():
             print("insira uma Opcção!")
 
 # Usuário
+#deixar digitar qualquer user ja q nao ta usando db, focar mais na senha
     usuario = input("\nDigite seu usuário: ")
     
     for user in usuarios:
@@ -267,12 +273,17 @@ def registrar():
 
 # Senha
     while True:
-        senha = input("Digite sua senha: ")
-        if len(senha) < 6:
-            print("A senha deve conter no mínimo 6 caracteres. Tente novamente.")
-
-        else:
-            break
+        try:
+            senha = input("Digite sua senha: ")
+            if len(senha) >= 6:
+                break        
+            else:
+                print("A senha deve conter no mínimo 6 caracteres. Tente novamente.")
+                raise ValueError
+        except ValueError:
+            print("Digite um valor válido")
+        finally:
+            print("Lembre-se: uma boa senha não possui sequências fáceis e não é pequena. \nE não se esqueça de anotar sua senha.\n")
 
 # Confirmando senha
     while True:
@@ -285,7 +296,7 @@ def registrar():
             break
 
 # Aluno
-    if tipo == "1":
+    if tipo == 1:
         while True:
             try:
                 # Matricula
@@ -304,12 +315,12 @@ def registrar():
         novo_usuario = Aluno(nome, idade, cpf, email, telefone, matricula, curso)
 
 # Professor
-    elif tipo == "2":
+    elif tipo == 2:
         curso = escolher_curso()  # definindo o curso
         novo_usuario = Prof(nome, idade, cpf, email, telefone, curso)
 
 # Adiministrador
-    elif tipo == "3":
+    elif tipo == 3:
         novo_usuario = Adm(nome, idade, cpf, email, telefone)
 
     else:
@@ -344,30 +355,35 @@ def acesso():
     print(rsp)
     if rsp != "usuário encontrado.":
         acesso()
-    else:
-        pass
-
-
     senha = input("Digite sua senha: ")
-
     dados_usuario = None  # definindo os dados do usuario no login // felipe
     for user in usuarios:
         if user["usuario"] == usuario and user["senha"] == senha:
             dados_usuario = user
             break
+        else:
+            print("senha inválida ou usuário inválidos. Deseja digitar novamente?\nR:")
+            dgtarNov = input("1-Sim 2- Não")
+            if dgtarNov == "1":
+                print("Ok.\nVoltando...")
+                acesso()
+            elif dgtarNov == "2":
+                print("Ok, saindo então.")
+                exit()
+            else:
+                print("Da próxima digite um dos valores solicitados! '-'")
+                print("Saindo...")
+                exit()
 
-# Acesso Aluno
-    if dados_usuario:
-        tipo_usuario = "Aluno" if dados_usuario["tipo"] == "1" else "Professor" if dados_usuario["tipo"] == "2" else "Administrador"
-        if dados_usuario["tipo"] == "1":
+# Acesso Aluno 
+    if dados_usuario["tipo"] == 1:
             nome_pessoa = dados_usuario["objeto"].getNome()
             print("Login realizado!\n")
             time.sleep(0.7)
-            print(f"Olá, {tipo_usuario} {nome_pessoa} ")
+            print(f"Olá, {nome_pessoa} ")
             time.sleep(0.5)
             menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
             if menu == 1:
-                
                 menu = int(input("1- Exibir dados do perfil \n2- Marcar atendimento \n3- Logout\n4- Consultar atendimentos:\nR: "))
             if menu == 1:
                 print ("")
@@ -379,25 +395,23 @@ def acesso():
             elif menu == 4:
                 pass
 # Acesso Professor
-        elif dados_usuario["tipo"] == "2":
+    elif dados_usuario["tipo"] == 2:
             nome_pessoa = dados_usuario["objeto"].getNome()
             print("Login realizado!\n")
             time.sleep(0.7)
-            print(f"Olá, {tipo_usuario} {nome_pessoa} ")
+            print(f"Olá, {nome_pessoa} ")
             time.sleep(0.5)
             menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
             if menu == 5:
                 exit()
 
 # Acesso Administrador
-        elif dados_usuario["tipo"] == "1":
+    elif dados_usuario["tipo"] == 1:
             nome_pessoa = dados_usuario["objeto"].getNome()
             print("Login realizado!\n")
-            print(f"Olá, {tipo_usuario} {nome_pessoa} ")
+            print(f"Olá, {nome_pessoa} ")
             time.sleep(0.5)
             menu = int(input("1 -  \n2- Consultar atendimentos: \n3-  \n\nR: "))
-            if menu == 1:
-                print ("asdasd")
 
     else:
         print("\nUsuário ou senha incorretos.")
