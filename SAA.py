@@ -14,7 +14,7 @@ from excecao import *
 
 usuarios = []
 dias = []
-validos = ascii_letters + ' áéíóúôâãõ'
+validos = ascii_letters + " áéíóúôâãõ"
 
 # Home
 def home():
