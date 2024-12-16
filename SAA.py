@@ -67,26 +67,29 @@ def verificar_matricula(matricula):
 
 
 # Escolha de Curso
-def escolher_curso():
+def escolher_curso(): #felipe
     print("\nEscolha seu curso técnico integrado:")
     print("1- Informática")
     print("2- Química")
     print("3- Eletrotécnica")
     print("4- Edificações")
-    opcao = input("Escolha de 1-4: ")
+    try:
+        opcao = int(input("Escolha de 1-4: "))
 
-    if opcao == "1":
-        return "Informática"
-    elif opcao == "2":
-        return "Química"
-    elif opcao == "3":
-        return "Eletrotécnica"
-    elif opcao == "4":
-        return "Edificações"
-    else:
-        print("Insira uma opção válida")
+        if opcao == 1:
+            return "Informática"
+        elif opcao == 2:
+            return "Química"
+        elif opcao == 3:
+            return "Eletrotécnica"
+        elif opcao == 4:
+            return "Edificações"
+        else:
+            print("Insira uma opção válida")
+            return escolher_curso()
+    except:
+        print("Insira um valor válido")
         return escolher_curso()
-
 
 def marcarAtendimento(aluno, professor):  # vai ter q receber o professor e o aluno como parametro aqui
     if aluno.getcurso() != professor.getcurso():
