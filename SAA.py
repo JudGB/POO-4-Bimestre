@@ -201,7 +201,7 @@ def registrar():
         print("Valor inválido. Escolha de 1-3.")
         registrar()
 
-# Nome
+# Nome // felipe 2
     while True:
         try:
             name = input("Digite seu nome: ")
