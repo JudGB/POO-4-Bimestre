@@ -1,4 +1,5 @@
 from classes import *
+from classeminha import *
 import time
 
 # 2º Ano B Vespertino Informática
@@ -7,8 +8,6 @@ import time
 # Celso Hector Silva Sales
 # Luiz Felipe Macedo Alencar de Menezes
 # Judson Gabriel Ferreira dos Santos
-
-# Atençãaaaaaaao!!!!!!!!!!!!!!!!!! ----> Confirmar usuario (Arrumar) / fazer a interface para cada carinha la
 
 usuarios = []
 dias = []
@@ -56,10 +55,6 @@ def verificacaoCPF(cpf):
         if user["objeto"].getCpf() == cpf:
             return True
     return False
-    """for user in usuarios:
-        if user["tipo"] == "2" and user["objeto"].getCpf() == cpf:
-            return True
-    return False"""
 
 
 
@@ -79,18 +74,21 @@ def escolher_curso():
     print("3- Eletrotécnica")
     print("4- Edificações")
     opcao = input("Escolha de 1-4: ")
+    try:
 
-    if opcao == "1":
-        return "Informática"
-    elif opcao == "2":
-        return "Química"
-    elif opcao == "3":
-        return "Eletrotécnica"
-    elif opcao == "4":
-        return "Edificações"
-    else:
-        print("Insira uma opção válida")
-        return escolher_curso()
+        if opcao == "1":
+            return "Informática"
+        elif opcao == "2":
+            return "Química"
+        elif opcao == "3":
+            return "Eletrotécnica"
+        elif opcao == "4":
+            return "Edificações"
+        else:
+            print("Insira uma opção válida")
+            return escolher_curso()
+    except:
+        print("Insira um valor válido...")
 
 
 def marcarAtendimento(aluno, professor):  # vai ter q receber o professor e o aluno como parametro aqui
@@ -184,14 +182,18 @@ def marcarAtendimento(aluno, professor):  # vai ter q receber o professor e o al
 # Registro
 def registrar():
     print("\nVocê é: 1- Aluno | 2- Professor | 3- Administrador | 0- Voltar")
-    tipo = input("Escolha uma opção: ")
 
-    if tipo == "0":
-        home()
+    try:
+        tipo = input("Escolha uma opção: ")
 
-    if tipo != "1" and tipo != "2" and tipo != "3":
-        print("Valor inválido. Escolha de 1-3.")
-        registrar()
+        if tipo == "0":
+            home()
+
+        if tipo != "1" and tipo != "2" and tipo != "3":
+            print("Valor inválido. Escolha de 1-3.")
+            registrar()
+    except:
+        print("Insira um valor válido...")
 
 # Nome
     nome = input("Digite seu nome: ")
@@ -358,18 +360,29 @@ def acesso():
             print(f"Olá, {tipo_usuario} {nome_pessoa} ")
             time.sleep(0.5)
             menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
-            if menu == 1:
-                print ("")
-            elif menu == 2:# Primeiro Try e Except, esse serve para alertar que o atendimento ta off ainda
-                try:
-                    marcarAtendimento()
-                except TypeError:
-                    print("\nParece que ainda não é possível marcar o atendimento ainda...\n")
+            try:
+                if menu == 1:
+                    raise PreguiçaExcept() #Essa classe serve para alertar que esta faltando algo
+                elif menu == 2:# Primeiro Try e Except, esse serve para alertar que o atendimento ta off ainda
+                    try:
+                        marcarAtendimento()
+                    except TypeError:
+                        print("\nParece que ainda não é possível marcar o atendimento ainda...\n")
+                        saida()
+
+                    finally:
+                        print("Tem que arrumar o marcaratendimento")
+                elif menu == 3: #Consultar atendimentos
+                    raise PreguiçaExcept()
+                elif menu == 4:
+                    acesso()
+                elif menu == 5:
                     saida()
-            elif menu == 3:
-                pass
-            elif menu == 4:
-                pass
+            except PreguiçaExcept:
+                print("Tá faltando algo aqui infelizmente...")
+            except:
+                    print("Insira numeros!")
+           
 # Acesso Professor
         elif dados_usuario["tipo"] == "2":
             nome_pessoa = dados_usuario["objeto"].getNome()
@@ -378,17 +391,23 @@ def acesso():
             print(f"Olá, {tipo_usuario} {nome_pessoa} ")
             time.sleep(0.5)
             menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
-            if menu == 1:
-                print("Perfil") #Exibir dados do perfil
-            elif menu == 2:
-                marcarAtendimento() #Marcar atendimento
-            elif menu == 3:
-                print("Consultar atendimento") #Consultar atendimentos
-            elif menu ==4:
-                acesso()
-            elif menu == 5:
-                saida()
-            
+
+            try:
+                if menu == 1:
+                    raise PreguiçaExcept() #Essa classe serve para alertar que esta faltando algo
+                elif menu == 2:
+                    marcarAtendimento() #Marcar atendimento
+                elif menu == 3:
+                    raise PreguiçaExcept() #Consultar atendimentos
+                elif menu ==4:
+                    acesso()
+                elif menu == 5:
+                    saida()
+            except PreguiçaExcept:
+                print("Tá faltando algo aqui infelizmente...")
+            except:
+                    print("Insira numeros!")
+                
 
 # Acesso Administrador
         elif dados_usuario["tipo"] == "3":
@@ -396,20 +415,23 @@ def acesso():
             print("Login realizado!\n")
             print(f"Olá, {tipo_usuario} {nome_pessoa} ")
             time.sleep(0.5)
-            while True:
-                try: #Esse try serve para aceitar só numeros no menu do ADM
-                    menu = int(input("1 -  \n2- Consultar atendimentos: \n3-  \n\nR: "))
-                    if menu == 1:
-                        print ("asdasd")
-                    elif menu == 2:
-                        print ("asdasd")
-                    elif menu == 3:
-                        print ("asdasd")
-                    elif menu == 4:
-                        acesso()
-                    else:
-                        saida()
-                except:
+            menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
+            
+            try:
+                if menu == 1:
+                    raise PreguiçaExcept() #Exibir dados do perfil
+                elif menu == 2:
+                    raise PreguiçaExcept() #Marcar atendimento
+                elif menu == 3:
+                    raise PreguiçaExcept() #Consultar atendimentos
+                elif menu == 4:
+                    acesso()
+                else:
+                    saida()
+
+            except PreguiçaExcept:
+                print("Tá faltando algo aqui infelizmente...")
+            except:
                     print("Insira numeros!")
 
     else:
