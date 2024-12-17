@@ -1,7 +1,8 @@
-from Classes import *
-from Exceptions import *
+from classes import *
+from exceptions import *
 import time
 import string
+import sys
 
 # 2º Ano B Vespertino Informática
 # Alunos:
@@ -25,7 +26,7 @@ def home():
         registrar()
     elif option == 0:
         print("Saindo... Até a próxima!")
-        exit()
+        sys.exit()
     else:
         print("Escolha uma opção válida.")
         home()
@@ -76,23 +77,26 @@ def escolher_curso():
     print("2- Química")
     print("3- Eletrotécnica")
     print("4- Edificações")
-    try:
-        opcao = int(input("Escolha de 1-4: "))
-        if opcao == 1:
-            return "Informática"
-        elif opcao == 2:
-            return "Química"
-        elif opcao == 3:
-            return "Eletrotécnica"
-        elif opcao == 4:
-            return "Edificações"
-        else:
-            print("Insira uma opção válida")
-            return escolher_curso()
+    while True:
+        try:
+            opcao = int(input("Escolha de 1-4: "))
+            if opcao == 1:
+                return "Informática"
+                
+            elif opcao == 2:
+                return "Química"
 
-    except:
-        print("Insira um valor válido")
-        return escolher_curso()
+            elif opcao == 3:
+                return "Eletrotécnica"
+
+            elif opcao == 4:
+                return "Edificações"
+
+            else:
+                print("Insira uma opção válida")
+
+        except:
+            print("Insira um valor válido")
 
 
 def marcarAtendimento(aluno, professor):  # vai ter q receber o professor e o aluno como parametro aqui
@@ -242,19 +246,19 @@ def registrar():
     while True:
         try:
             cpf = str(input("Digite seu CPF: (no formato XXX.XXX.XXX-XX): "))
+            cpfNums = cpf.replace(".", "").replace("-", "")
             if verificacaoCPF(cpf):
                 print("\nCPF já registrado. Tente novamente.\n")
                 continue
 
-            cpfNums = cpf.replace(".", "").replace("-", "")
             if not cpfNums.isdigit():
                 raise ValueError
-
-            elif "-" not in cpf or "." not in cpf:
-                raise FaltaCaracterError
             
-            elif len(cpfNums) != 11:
+            if len(cpfNums) != 11:
                 raise TamanhoError
+
+            if not (cpf[3] == "." and cpf[7] == "." and cpf[11] == "-"):
+                raise FormatacaoError
 
             else:  
                 break
@@ -265,7 +269,7 @@ def registrar():
         except ValueError:
             print ("O Cpf deve conter apenas números.")
 
-        except FaltaCaracterError:
+        except FormatacaoError:
             print ("Digite o Cpf no formato (XXX.XXX.XXX-XX)")
 
         except:
@@ -281,7 +285,7 @@ def registrar():
                 continue
             
             elif "@" not in email or "." not in email:
-                raise FaltaCaracterError
+                raise FormatacaoError
 
             elif email.index("@") == 0:
                 raise EmailSemUsuarioError
@@ -289,7 +293,7 @@ def registrar():
             else:
                 break
         
-        except FaltaCaracterError:
+        except FormatacaoError:
             print ("O email deve conter '@' e '.'")
 
         except EmailSemUsuarioError:
@@ -308,9 +312,9 @@ def registrar():
             if not telNums.isdigit():
                 raise ValueError
 
-            elif "-" not in telefone or "(" not in telefone or ")" not in telefone:
-                raise FaltaCaracterError
-            
+            if not (telefone[0] == "(" and telefone[3] == ")" and telefone[9] == "-"):
+                raise FormatacaoError
+                        
             elif len(telNums) != 11:
                 raise TamanhoError
 
@@ -326,7 +330,7 @@ def registrar():
         except ValueError:
             print ("O telefone deve conter apenas números (Sem espaços).")
 
-        except FaltaCaracterError:
+        except FormatacaoError:
             print ("Digite o telefone no formato (XXX.XXX.XXX-XX)")
 
         except DddError:
@@ -335,20 +339,21 @@ def registrar():
         except:
             print ("Ocorreu um erro")
 
-        else:
-            break
-
 # PCD
     while True:
         try:
             pcdAsk = int(input("\nVocê é uma Pessoa com Deficiência?\n1- Sim\n2- Não\nR: "))
             if pcdAsk == 1:
-                qualpcd = input("\nQual sua deficiência?\nSiga o exemplo: 'Possuo deficiência <deficiência>'\nR: ")
-                pcd = qualpcd.split("Possuo ")
-                pcd = pcd[1]
-                pcd = "Possui " + pcd
-                break
+                while True:         
+                    try: 
+                        qualpcd = input("\nQual sua deficiência?\nSiga o exemplo: 'Possuo deficiência <deficiência>'\nR: ")
+                        pcd = qualpcd.split("Possuo ")
+                        pcd = pcd[1]
+                        pcd = "Possui " + pcd
+                        break
 
+                    except:
+                        print ("Ocorreu um erro, tente novamente.")
 
             elif pcdAsk == 2:
                 break
@@ -356,6 +361,7 @@ def registrar():
             else:
                 print("Opção incorreta!")
 
+            break
         except:
             print("insira uma Opcção!")
 
@@ -407,7 +413,15 @@ def registrar():
 # Professor
     elif tipo == "2":
         curso = escolher_curso()  # definindo o curso
-        novo_usuario = Prof(nome, idade, cpf, email, telefone, curso)
+        try:
+            novo_usuario = Prof(nome, idade, cpf, email, telefone, curso)
+
+        except:
+            print ("\nOcorreu um erro\n")
+
+        finally:
+            print ("Trabalho em processo (Talvez Eternamente) ;()") 
+            sys.exit()
 
 # Adiministrador
     elif tipo == "3":
@@ -417,13 +431,19 @@ def registrar():
         print("Opção inválida. Tente novamente.")
         registrar()
 
-    usuarios.append({"usuario": usuario, "senha": senha, "tipo": tipo, "objeto": novo_usuario})
-    print("Registro realizado com sucesso.\n")
-    time.sleep(0.5)
-    print("Redirecionando para o login...\n")
-    time.sleep(1)
-    acesso()
+    try:
+        usuarios.append({"usuario": usuario, "senha": senha, "tipo": tipo, "objeto": novo_usuario})
+        print("Registro realizado com sucesso.\n")
+        time.sleep(0.5)
+        print("Redirecionando para o login...\n")
+        time.sleep(1)
+        acesso()
 
+    except:
+        acesso()
+
+    finally:
+        print ("\nTrabalho em processo (Talvez Eternamente) ;)\n")
 
 # Acesso
 def acesso():
@@ -447,43 +467,127 @@ def acesso():
         tipo_usuario = "Aluno" if dados_usuario["tipo"] == "1" else "Professor" if dados_usuario["tipo"] == "2" else "Administrador"
         if dados_usuario["tipo"] == "1":
             nome_pessoa = dados_usuario["objeto"].getNome()
+            idade_pessoa = dados_usuario["objeto"].getIdade()
+            cpf_pessoa = dados_usuario["objeto"].getCpf()
+            email_pessoa = dados_usuario["objeto"].getEmail()
+            telefone_pessoa = dados_usuario["objeto"].getTelefone()
             print("Login realizado!\n")
             time.sleep(0.7)
             print(f"Olá, {tipo_usuario} {nome_pessoa} ")
             time.sleep(0.5)
-            menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
-            if menu == 1:
-                
-                menu = int(input("1- Exibir dados do perfil \n2- Marcar atendimento \n3- Logout\n4- Consultar atendimentos:\nR: "))
-            if menu == 1:
-                print ("")
-            elif menu == 2:
-                marcarAtendimento()
-            
-            elif menu == 3:
-                pass
-            elif menu == 4:
-                pass
+            while True:
+                try:
+                    menu = int(input("1- Exibir dados gerais do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
+                    if menu == 1:
+                        time.sleep(0.7)
+                        print ("\n--- Aluno ---")
+                        print (f"Nome: {nome_pessoa}")
+                        print (f"Idade: {idade_pessoa}")
+                        print (f"Cpf: {cpf_pessoa}")
+                        print (f"Email: {email_pessoa}")
+                        print (f"Telefone: {telefone_pessoa}\n")
+                        time.sleep(0.7)
+
+                    elif menu == 2:
+                        raise EmProcessoError
+                        marcarAtendimento()
+
+                    elif menu == 3:
+                        raise EmProcessoError
+
+                    elif menu == 4:
+                        raise EmProcessoError
+
+                    elif menu == 5:
+                        sys.exit()
+
+                except EmProcessoError:
+                    time.sleep(0.7)
+                    print ("\nTrabalho em processo (Talvez Eternamente) ;)\n")
+                    time.sleep(0.7)
+
 # Acesso Professor
         elif dados_usuario["tipo"] == "2":
             nome_pessoa = dados_usuario["objeto"].getNome()
+            idade_pessoa = dados_usuario["objeto"].getIdade()
+            cpf_pessoa = dados_usuario["objeto"].getCpf()
+            email_pessoa = dados_usuario["objeto"].getEmail()
+            telefone_pessoa = dados_usuario["objeto"].getTelefone()
             print("Login realizado!\n")
             time.sleep(0.7)
             print(f"Olá, {tipo_usuario} {nome_pessoa} ")
             time.sleep(0.5)
-            menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
-            if menu == 5:
-                exit()
+            while True:
+                try:
+                    menu = int(input("1- Exibir dados gerais do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
+                    if menu == 1:
+                        time.sleep(0.7)
+                        print ("\n--- Professor ---")
+                        print (f"Nome: {nome_pessoa}")
+                        print (f"Idade: {idade_pessoa}")
+                        print (f"Cpf: {cpf_pessoa}")
+                        print (f"Email: {email_pessoa}")
+                        print (f"Telefone: {telefone_pessoa}\n")
+                        time.sleep(0.7)
+
+                    elif menu == 2:
+                        raise EmProcessoError
+                        marcarAtendimento()
+                    
+                    elif menu == 3:
+                        raise EmProcessoError
+                    
+                    elif menu == 4:
+                        raise EmProcessoError
+                    
+                    elif menu == 5:
+                        sys.exit()
+                
+                except EmProcessoError:
+                    time.sleep(0.7)
+                    print ("\nTrabalho em processo (Talvez Eternamente) ;)\n")
+                    time.sleep(0.7)
 
 # Acesso Administrador
-        elif dados_usuario["tipo"] == "1":
+        elif dados_usuario["tipo"] == "3":
             nome_pessoa = dados_usuario["objeto"].getNome()
+            idade_pessoa = dados_usuario["objeto"].getIdade()
+            cpf_pessoa = dados_usuario["objeto"].getCpf()
+            email_pessoa = dados_usuario["objeto"].getEmail()
+            telefone_pessoa = dados_usuario["objeto"].getTelefone()
             print("Login realizado!\n")
             print(f"Olá, {tipo_usuario} {nome_pessoa} ")
             time.sleep(0.5)
-            menu = int(input("1 -  \n2- Consultar atendimentos: \n3-  \n\nR: "))
-            if menu == 1:
-                print ("asdasd")
+            while True:
+                try:
+                    menu = int(input("1- Exibir dados gerais do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
+                    if menu == 1:
+                        time.sleep(0.7)
+                        print ("\n--- Administrador ---")
+                        print (f"Nome: {nome_pessoa}")
+                        print (f"Idade: {idade_pessoa}")
+                        print (f"Cpf: {cpf_pessoa}")
+                        print (f"Email: {email_pessoa}")
+                        print (f"Telefone: {telefone_pessoa}\n")
+                        time.sleep(0.7)
+
+                    elif menu == 2:
+                        raise EmProcessoError
+                        marcarAtendimento()
+                    
+                    elif menu == 3:
+                        raise EmProcessoError
+                    
+                    elif menu == 4:
+                        raise EmProcessoError
+                    
+                    elif menu == 5:
+                        sys.exit()
+                
+                except EmProcessoError:
+                    time.sleep(0.7)
+                    print ("\nTrabalho em processo (Talvez Eternamente) ;)\n")
+                    time.sleep(0.7)
 
     else:
         print("\nUsuário ou senha incorretos.")
@@ -498,11 +602,14 @@ def saida():
             home()
         elif escolha == 0:
             print("Saindo... Até a próxima!")
-            exit()
+            sys.exit()
 
     except:
         print("Escolha uma opção válida.")
         saida()
+
+    finally:
+        print("Finalizando saída.")
 
 
 print("Bem-vindo ao SAA - Sistema de Atendimento ao Aluno\nIFRO Campus Calama - Técnico Integrado")
