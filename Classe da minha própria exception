@@ -1,2 +1,2 @@
-class PreguiçaExcept(Exception):
+class EmconstrucaoExcept(Exception):
     pass
