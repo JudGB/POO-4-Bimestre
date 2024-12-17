@@ -1,4 +1,4 @@
-# -- Branch do Celso
+# ---- Branch Celso ----
 2º Ano B Vespertino Informática
 ============== Grupo ==============
 ======= André Luís Bento Ferreira =======

@@ -384,19 +384,20 @@ def acesso():
             time.sleep(0.7)
             print(f"Olá, {nome_pessoa}\nBem-Vindo. ")
             time.sleep(0.5)
-            menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
+            menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Logout\n4- Sair\nR: "))
             if menu == 1:
                 #nome, idade, cpf, email, telefone, matricula, curso
                 print(dados_usuario)
-            elif menu == 1:
-                dados_usuario
             elif menu == 2:
-                marcarAtendimento()
-            
+                aluno = input("Qual o nome do aluno relacionado ao atendimento?")
+                professor = input("Qual o nome do professor relacionado ao atendimento?")
+                marcarAtendimento(aluno,professor)
             elif menu == 3:
-                pass
+                print("deslogando...")
+                home()
             elif menu == 4:
-                pass
+                print("saindo...")
+                exit()
 # Acesso Professor
     elif dados_usuario["tipo"] == 2:
             nome_pessoa = dados_usuario["objeto"].getNome()
@@ -404,8 +405,21 @@ def acesso():
             time.sleep(0.7)
             print(f"Olá, {nome_pessoa} ")
             time.sleep(0.5)
-            menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
-            if menu == 5:
+            menu = input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: ")
+            if menu == "1":
+                print(dados_usuario)
+            elif menu == "2":
+                aluno = input("Qual o nome do aluno relacionado ao atendimento?")
+                professor = input("Qual o nome do professor relacionado ao atendimento?")
+                marcarAtendimento(aluno,professor)
+            elif  menu == "3":
+                #consultarAtendimento()
+                pass
+            elif menu == "4":
+                print("deslogando...")
+                home()
+            elif menu == "5":
+                print("saindo...")
                 exit()
 
 # Acesso Administrador
@@ -414,25 +428,21 @@ def acesso():
             print("Login realizado!\n")
             print(f"Olá, {nome_pessoa} ")
             time.sleep(0.5)
-            menu = int(input("1 -  \n2- Consultar atendimentos: \n3-  \n\nR: "))
-
+            menu = int(input("1 - Exibir Dados do Perfil  \n2- Consultar atendimentos: \n3- Logout\n4- Sair\nR: "))
+            if menu == "1":
+                print(dados_usuario)
+            elif menu == "2":
+                #consultarAtendimento()
+                pass
+            elif menu == "3":
+                print("deslogando...")
+                home()
+            elif menu == "4":
+                print("saindo...")
+                exit()
     else:
         print("\nUsuário ou senha incorretos.")
         acesso()
-
-# Saída
-def saida():
-    print("\nDigite 0 para sair ou 1 para voltar ao menu principal.")
-    escolha = input("Escolha uma opção: ")
-    if escolha == "1":
-        home()
-    elif escolha == "0":
-        print("Saindo... Até a próxima!")
-        exit()
-    else:
-        print("Escolha uma opção válida.")
-        saida()
-
 
 print("Bem-vindo ao SAA - Sistema de Atendimento ao Aluno\nIFRO Campus Calama - Técnico Integrado")
 home()
