@@ -3,6 +3,7 @@ import time #utilizando a biblioteca time, para usar o método sleep
 
 usuarios = [] #coleção 1 
 dias = [] #coleção 2 
+dados_usuario = {}
 
 # Home
 def home():
@@ -20,8 +21,6 @@ def home():
     except SystemExit:
         exit()
     except:
-            # if option == 0:
-            #     exit()
             print("\nDigite apenas *números* inteiros de 0 a 2.")
             home()
     
@@ -75,8 +74,9 @@ def escolher_curso():
     print("2- Química")
     print("3- Eletrotécnica")
     print("4- Edificações")
+    time.sleep(0.5)
     opcao = input("Escolha de 1-4: ")
-
+    time.sleep(0.5)
     if opcao == "1":
         return "Informática"
     elif opcao == "2":
@@ -197,11 +197,13 @@ def registrar():
 #fazer tratamento aq
 # Nome 
     nome = input("Digite seu nome: ")
+    time.sleep(0.5)
 
 # Idade
     while True:
         try:
             idade = int(input("Digite sua idade: "))
+            time.sleep(0.5)
             if idade <= 14 or idade >= 75:
                 print("\nInsira um número válido (Maior que 14 e menor que 75)\n")
 
@@ -215,6 +217,7 @@ def registrar():
     while True:
         try:
             cpf = int(input("Digite seu CPF: "))
+            time.sleep(0.5)
             if verificacaoCPF(cpf):
                 print("\nCPF já registrado. Tente novamente.\n")
                 continue
@@ -228,6 +231,7 @@ def registrar():
 # Email
     while True:
         email = input("Digite seu email: ")
+        time.sleep(0.5)
         if verificacaoEMAIL(email):
             print("\nEmail já registrado. Tente novamente.\n")
             continue
@@ -238,6 +242,7 @@ def registrar():
 # Telefone
     while True:
         telefone = input("Digite seu telefone: ")
+        time.sleep(0.5)
         if verificacaoTELEFONE(telefone):
             print("\nTelefone já registrado. Tente novamente.\n")
             continue
@@ -249,14 +254,14 @@ def registrar():
     while True:
         try:
             pcdAsk = int(input("\nVocê é uma Pessoa com Deficiência?\n1- Sim\n2- Não\nR: "))
+            time.sleep(0.5)
             if pcdAsk == 1:
                 qualpcd = input("\nQual sua deficiência?\nSiga o exemplo: 'Possuo deficiência <deficiência>'\nR: ")
                 pcd = qualpcd.split("Possuo ")
                 pcd = pcd[1]
                 pcd = "Possui " + pcd
+                dados_usuario["PCD"] = pcd
                 break
-
-
             elif pcdAsk == 2:
                 break
 
@@ -269,6 +274,7 @@ def registrar():
 # Usuário
 #deixar digitar qualquer user ja q nao ta usando db, focar mais na senha
     usuario = input("\nDigite seu usuário: ")
+    time.sleep(0.5)
     
     for user in usuarios:
         if user["usuario"] == usuario:
@@ -279,6 +285,7 @@ def registrar():
     while True:
         try:
             senha = input("Digite sua senha: ")
+            time.sleep(0.5)
             if len(senha) >= 6:
                 break        
             else:
@@ -295,8 +302,11 @@ def registrar():
         time.sleep(0.5)
         if senha != senha1:
             print("As senhas não coincidem. Tente novamente.")
+            time.sleep(0.5)
 
         else:
+            print("As senhas coincidem... Continuando.")
+            time.sleep(0.5)
             break
 
 # Aluno
@@ -305,6 +315,7 @@ def registrar():
             try:
                 # Matricula
                 matricula = int(input("Digite sua matrícula: "))
+                time.sleep(0.5)
                 if verificar_matricula(matricula):
                     print("Matrícula já registrada. Tente novamente.")
                     continue
@@ -317,15 +328,17 @@ def registrar():
 
         curso = escolher_curso()
         novo_usuario = Aluno(nome, idade, cpf, email, telefone, matricula, curso)
-
+        if pcdAsk == 1: novo_usuario.definindoPcd(pcd)
 # Professor
     elif tipo == 2:
         curso = escolher_curso()  # definindo o curso
         novo_usuario = Prof(nome, idade, cpf, email, telefone, curso)
+        if pcdAsk == 1: novo_usuario.definindoPcd(pcd)
 
 # Adiministrador
     elif tipo == 3:
         novo_usuario = Adm(nome, idade, cpf, email, telefone)
+        if pcdAsk == 1: novo_usuario.definindoPcd(pcd)
 
     else:
         print("Opção inválida. Tente novamente.")
@@ -342,13 +355,16 @@ def registrar():
 # Acesso
 def acesso():
     if len(usuarios) <= 0:
+        time.sleep(1)
         print("Antes de fazer o login, é necessário fazer seu registro.")
+        time.sleep(0.5)
         print("Indo para tela de resgitro...")
         registrar()
     time.sleep(0.5)
     print("(digite 0 se quiser retornar ao menu)")
     time.sleep(0.5)
     usuario = input("Digite seu usuário: ")
+    time.sleep(0.5)
     rsp = "usuário encontrado."
     if usuario == "0":
         home()
@@ -356,25 +372,29 @@ def acesso():
         if user["usuario"] != usuario:
             rsp = "O usuário informado não existe. Tente novamente."   
     if rsp != "usuário encontrado.":
+        print(rsp)
         acesso()
     senha = input("Digite sua senha: ")
-    dados_usuario = None  # definindo os dados do usuario no login // felipe
     for user in usuarios:
         if user["usuario"] == usuario and user["senha"] == senha:
             dados_usuario = user
             break
         else:
-            print("senha inválida ou usuário inválidos. Deseja digitar novamente?\nR:")
-            dgtarNov = input("1-Sim 2- Não")
+            print("senha inválida ou usuário inválidos. Deseja digitar novamente?")
+            dgtarNov = input("1-Sim 2- Não\nR:")
             if dgtarNov == "1":
                 print("Ok.\nVoltando...")
+                time.sleep(0.5)
                 acesso()
             elif dgtarNov == "2":
                 print("Ok, saindo então.")
+                time.sleep(0.5)
                 exit()
             else:
                 print("Da próxima digite um dos valores solicitados! '-'")
+                time.sleep(0.5)
                 print("Saindo...")
+                time.sleep(0.5)
                 exit()
 
 # Acesso Aluno 
