@@ -14,15 +14,20 @@ def home():
             registrar()
         elif option == 0:
             print("Saindo... Até a próxima!")
-            exit()
+            raise SystemExit
+        elif option < 0 and option > 2:
+            raise ValueError
+    except SystemExit:
+        exit()
     except:
-            if option == 0:
-                exit()
+            # if option == 0:
+            #     exit()
             print("\nDigite apenas *números* inteiros de 0 a 2.")
             home()
-    else:
-        print("Lembre-se de digitar um valor de 0 a 2.")
-        home()
+    
+
+
+
 
 # Função de verificão do dia
 def verificacaoDIA(data):  # função para verificar se pro dia digitado já existe um atendimento // felipe w/ celso
@@ -181,7 +186,7 @@ def registrar():
         if tipo != 1 and tipo != 2 and tipo != 3 and tipo != 0:
             print("Valor inválido. Escolha de 0-3.")
             registrar()
-        elif tipo == "0":
+        elif tipo == 0:
             home()
     except (ValueError,TypeError):
         print("Você digitou não digitou um inteiro de 0 a 3.")
@@ -189,9 +194,8 @@ def registrar():
     
 
     
-
+#fazer tratamento aq
 # Nome 
-#felipe vai fazer o tratamento dele aqui
     nome = input("Digite seu nome: ")
 
 # Idade
@@ -350,9 +354,7 @@ def acesso():
         home()
     for user in usuarios:
         if user["usuario"] != usuario:
-            print(user["usuario"],usuario)
             rsp = "O usuário informado não existe. Tente novamente."   
-    print(rsp)
     if rsp != "usuário encontrado.":
         acesso()
     senha = input("Digite sua senha: ")
@@ -380,13 +382,14 @@ def acesso():
             nome_pessoa = dados_usuario["objeto"].getNome()
             print("Login realizado!\n")
             time.sleep(0.7)
-            print(f"Olá, {nome_pessoa} ")
+            print(f"Olá, {nome_pessoa}\nBem-Vindo. ")
             time.sleep(0.5)
             menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
             if menu == 1:
-                menu = int(input("1- Exibir dados do perfil \n2- Marcar atendimento \n3- Logout\n4- Consultar atendimentos:\nR: "))
-            if menu == 1:
-                print ("")
+                #nome, idade, cpf, email, telefone, matricula, curso
+                print(dados_usuario)
+            elif menu == 1:
+                dados_usuario
             elif menu == 2:
                 marcarAtendimento()
             
@@ -406,7 +409,7 @@ def acesso():
                 exit()
 
 # Acesso Administrador
-    elif dados_usuario["tipo"] == 1:
+    elif dados_usuario["tipo"] == 3:
             nome_pessoa = dados_usuario["objeto"].getNome()
             print("Login realizado!\n")
             print(f"Olá, {nome_pessoa} ")
