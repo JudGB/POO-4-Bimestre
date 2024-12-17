@@ -16,15 +16,15 @@ def home():
                 registrar()
             elif option == 0:
                 print("Saindo... Até a próxima!")
-                break
+                exit()
             elif option < 0 or option > 2:
                 raise ValueError
-        except:
+        except ValueError:
             print("\nDigite apenas *números* inteiros de 0 a 2.")
        
     
 # Função de verificão do dia
-def verificacaoDIA(data):  # função para verificar se pro dia digitado já existe um atendimento // felipe w/ celso
+def verificacaoDIA(data):  
     for datas in dias:
         if datas == data:
             return True
@@ -85,7 +85,7 @@ def escolher_curso():
         return escolher_curso()
 
 
-def marcarAtendimento(aluno, professor): 
+def marcarAtendimento(aluno, professor,profouAluno): 
     curso = aluno.getcurso()
     materia = input("Qual a matéria relacionada ao atendimento?\nR:")
     sair = False
@@ -158,10 +158,11 @@ def marcarAtendimento(aluno, professor):
 
         except:
             print("Insira números!\n")
-
     atendimento = Atendimento(curso, materia, horario, data, professor, aluno)
-    professor.adicionarAtendimentos(atendimento)
-    aluno.adicionarAtendimentos(atendimento)
+    if profouAluno == True:
+        aluno.adicionarAtendimentos(atendimento)
+    elif profouAluno == False:
+        professor.adicionarAtendimentos(atendimento)
     
 def verMyAtendimentos(pessoa):
     pessoa.consultarAtendimentos()
@@ -443,9 +444,13 @@ def acesso():
                     time.sleep(0.5)
                 elif menu == 2:
                     professor = input("Qual o nome do professor relacionado ao atendimento?\nR:")
-                    marcarAtendimento(dados_usuario["objeto"],professor)
+                    marcarAtendimento(dados_usuario["objeto"],professor,True)
                 elif menu == 3:
-                    verMyAtendimentos()
+                    print()
+                    time.sleep(0.5)
+                    verMyAtendimentos(dados_usuario["objeto"])
+                    print()
+                    time.sleep(0.5)
                 elif menu == 4:
                     print("deslogando...")
                     home()
@@ -466,10 +471,9 @@ def acesso():
                     print(dados_usuario)
                 elif menu == "2":
                     aluno = input("Qual o nome do aluno relacionado ao atendimento?")
-                    professor = input("Qual o nome do professor relacionado ao atendimento?")
-                    marcarAtendimento(aluno,professor)
+                    marcarAtendimento(aluno,dados_usuario["objeto"],False)
                 elif  menu == "3":
-                    verMyAtendimentos()
+                    verMyAtendimentos(dados_usuario["objeto"])
                     
                 elif menu == "4":
                     print("deslogando...")
