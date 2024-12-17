@@ -477,7 +477,8 @@ def acesso():
             time.sleep(0.5)
             while True:
                 try:
-                    menu = int(input("1- Exibir dados gerais do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
+                    time.sleep(0.7)
+                    menu = int(input("\n1- Exibir dados gerais do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
                     if menu == 1:
                         time.sleep(0.7)
                         print ("\n--- Aluno ---")
@@ -499,12 +500,15 @@ def acesso():
                         raise EmProcessoError
 
                     if menu == 5:
-                        sys.exit()
+                        os._exit(0)
 
                 except EmProcessoError:
                     time.sleep(0.7)
                     print ("\nTrabalho em processo (Talvez Eternamente) ;)\n")
                     time.sleep(0.7)
+
+                if menu == 5:
+                    sys.exit()
 
 # Acesso Professor
         elif dados_usuario["tipo"] == "2":
@@ -519,7 +523,8 @@ def acesso():
             time.sleep(0.5)
             while True:
                 try:
-                    menu = int(input("1- Exibir dados gerais do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
+                    time.sleep(0.7)
+                    menu = int(input("\n1- Exibir dados gerais do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
                     if menu == 1:
                         time.sleep(0.7)
                         print ("\n--- Professor ---")
@@ -541,12 +546,15 @@ def acesso():
                         raise EmProcessoError
                     
                     if menu == 5:
-                        sys.exit()
+                        break
                 
                 except EmProcessoError:
                     time.sleep(0.7)
                     print ("\nTrabalho em processo (Talvez Eternamente) ;)\n")
                     time.sleep(0.7)
+
+                if menu == 5:
+                    sys.exit()
 
 # Acesso Administrador
         elif dados_usuario["tipo"] == "3":
@@ -560,7 +568,9 @@ def acesso():
             time.sleep(0.5)
             while True:
                 try:
-                    menu = int(input("1- Exibir dados gerais do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
+                    time.sleep(0.7)
+                    menu = int(input("\n1- Exibir dados gerais do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
+                    
                     if menu == 1:
                         time.sleep(0.7)
                         print ("\n--- Administrador ---")
@@ -580,14 +590,17 @@ def acesso():
                     
                     if menu == 4:
                         raise EmProcessoError
-                    
+
                     if menu == 5:
-                        sys.exit()
+                        break    
                 
                 except EmProcessoError:
                     time.sleep(0.7)
                     print ("\nTrabalho em processo (Talvez Eternamente) ;)\n")
                     time.sleep(0.7)
+
+                if menu == 5:
+                    sys.exit()
 
     else:
         print("\nUsuário ou senha incorretos.")
