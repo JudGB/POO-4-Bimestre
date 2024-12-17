@@ -362,8 +362,8 @@ def acesso():
             menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
             try:
                 if menu == 1:
-                    raise PreguiçaExcept() #Essa classe serve para alertar que esta faltando algo
-                elif menu == 2:# Primeiro Try e Except, esse serve para alertar que o atendimento ta off ainda
+                    raise EmconstrucaoExcept() #Essa classe serve para alertar que esta faltando algo, que esta sendo feito ainda
+                elif menu == 2: #Primeiro Try e Except, esse serve para alertar que o atendimento ta off ainda
                     try:
                         marcarAtendimento()
                     except TypeError:
@@ -373,13 +373,13 @@ def acesso():
                     finally:
                         print("Tem que arrumar o marcaratendimento")
                 elif menu == 3: #Consultar atendimentos
-                    raise PreguiçaExcept()
+                    raise EmconstrucaoExcept()
                 elif menu == 4:
                     acesso()
                 elif menu == 5:
                     saida()
-            except PreguiçaExcept:
-                print("Tá faltando algo aqui infelizmente...")
+            except EmconstrucaoExcept:
+                print("Parece que por aqui não esta terminado, estamos trabalhando para arrumar está parte peço perdão...")
             except:
                     print("Insira numeros!")
            
@@ -394,17 +394,17 @@ def acesso():
 
             try:
                 if menu == 1:
-                    raise PreguiçaExcept() #Essa classe serve para alertar que esta faltando algo
+                    raise EmconstrucaoExcept() #Essa classe serve para alertar que esta faltando algo, que esta sendo feito ainda
                 elif menu == 2:
                     marcarAtendimento() #Marcar atendimento
                 elif menu == 3:
-                    raise PreguiçaExcept() #Consultar atendimentos
+                    raise EmconstrucaoExcept() #Consultar atendimentos
                 elif menu ==4:
                     acesso()
                 elif menu == 5:
                     saida()
-            except PreguiçaExcept:
-                print("Tá faltando algo aqui infelizmente...")
+            except EmconstrucaoExcept:
+                print("Parece que por aqui não esta terminado, estamos trabalhando para arrumar está parte peço perdão...")
             except:
                     print("Insira numeros!")
                 
@@ -419,18 +419,18 @@ def acesso():
             
             try:
                 if menu == 1:
-                    raise PreguiçaExcept() #Exibir dados do perfil
+                    raise EmconstrucaoExcept() #Exibir dados do perfil
                 elif menu == 2:
-                    raise PreguiçaExcept() #Marcar atendimento
+                    raise EmconstrucaoExcept() #Marcar atendimento
                 elif menu == 3:
-                    raise PreguiçaExcept() #Consultar atendimentos
+                    raise EmconstrucaoExcept() #Consultar atendimentos
                 elif menu == 4:
                     acesso()
                 else:
                     saida()
 
-            except PreguiçaExcept:
-                print("Tá faltando algo aqui infelizmente...")
+            except EmconstrucaoExcept:
+                print("Parece que por aqui não esta terminado, estamos trabalhando para arrumar está parte peço perdão...")
             except:
                     print("Insira numeros!")
 
