@@ -126,7 +126,6 @@ class Atendimento():
         self.__materia = materia
         self.__horario = horario
         self.__data = data
-        # Na linha abaixo está acontecendo a relação `trigger digger, skibidi n...`
         self.__professor = professor
         self.__aluno = aluno
 

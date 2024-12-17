@@ -2,6 +2,7 @@ from classes import *
 import time
 from string import ascii_letters
 from excecao import *
+import re
 
 # 2º Ano B Vespertino Informática
 # Alunos:
@@ -14,7 +15,9 @@ from excecao import *
 
 usuarios = []
 dias = []
-validos = ascii_letters + " áéíóúôâãõ"
+dominios = ["gmail.com", "outlook.com", "hotmail.com", "yahoo.com", "icloud.com", "aol.com", "mail.com", "ifro.edu.br", "estudante.ifro.edu.br"]
+validosNOME = ascii_letters + " áéíóúôâãõ"
+validosEMAIl = ascii_letters + "123456789@. -_+/?=&;"
 
 # Home
 def home():
@@ -67,7 +70,6 @@ def verificar_matricula(matricula):
         if user["tipo"] == "1" and user["objeto"].getmatricula() == matricula:
             return True
     return False
-
 
 # Escolha de Curso
 def escolher_curso(): #felipe1
@@ -188,11 +190,19 @@ def nome(name): #def limitando a string - felipe
         raise TamanhoNome
     else:
         return name
+def email(email):
+    min1 = 2
+    max = 64
+    if len(email) > max or len(email) < min1:
+        raise TamanhoEmail
+    else:
+        return email
 
 # Registro
 def registrar():
     print("\nVocê é: 1- Aluno | 2- Professor | 3- Administrador | 0- Voltar")
     tipo = input("Escolha uma opção: ")
+    tipo = tipo.strip()
 
     if tipo == "0":
         home()
@@ -205,7 +215,8 @@ def registrar():
     while True:
         try:
             name = input("Digite seu nome: ")
-            if all(l in validos for l in name) and ' ' in name:
+            name = name.strip()
+            if all(l in validosNOME for l in name) and ' ' in name:
                 nome(name)
                 break
             else:
@@ -240,12 +251,34 @@ def registrar():
         except:
             print("\nInsira um valor válido.\n")
 
-# Email
+# Email - felipe 3
     while True:
-        email = input("Digite seu email: ")
-        if verificacaoEMAIL(email):
-            print("\nEmail já registrado. Tente novamente.\n")
-            continue
+        try:
+            min = 2
+            max = 64
+            email = input("Digite seu email: ")
+            if any(dominio not in email for dominio in dominios):
+                print("\nDomínio inválido. Tente novamente.\n")
+                continue
+
+            elif verificacaoEMAIL(email):
+                print("\nEmail já registrado. Tente novamente.\n")
+                continue
+
+            elif "@" not in email and "." not in email:
+                print("Email inválido. Tente novamente.")
+                continue
+
+            elif email.index("@") == 0:
+                print("Email inválido. Tente novamente.")
+                continue
+
+            else:
+                print(">>Email cadastrado com sucesso.\n")
+                break
+        except TamanhoEmail:
+            print("")
+
 
         else:
             break
@@ -311,7 +344,7 @@ def registrar():
     if tipo == "1":
         while True:
             try:
-                # Matricula
+                #Matricula
                 matricula = int(input("Digite sua matrícula: "))
                 if verificar_matricula(matricula):
                     print("Matrícula já registrada. Tente novamente.")
@@ -328,7 +361,7 @@ def registrar():
 
 # Professor
     elif tipo == "2":
-        curso = escolher_curso()  # definindo o curso
+        curso = escolher_curso()  #definindo o curso
         novo_usuario = Prof(nome, idade, cpf, email, telefone, curso)
 
 # Adiministrador
@@ -366,22 +399,24 @@ def acesso():
 
 # Acesso Aluno
     if dados_usuario:
-        tipo_usuario = "Aluno" if dados_usuario["tipo"] == "1" else "Professor" if dados_usuario["tipo"] == "2" else "Administrador"
+        tipo_usuario = "Aluno" if dados_usuario["tipo"] == "1" \
+            else "Professor" if dados_usuario["tipo"] == "2" \
+            else "Administrador" #definindo o tipo do usuario na hora do print de boas vindas
+
         if dados_usuario["tipo"] == "1":
             nome_pessoa = dados_usuario["objeto"].getNome()
             print("Login realizado!\n")
             time.sleep(0.7)
-            print(f"Olá, {tipo_usuario} {nome_pessoa} ")
+            print(f"Olá, {nome_pessoa} - {tipo_usuario}")
             time.sleep(0.5)
             menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
+
             if menu == 1:
-                
                 menu = int(input("1- Exibir dados do perfil \n2- Marcar atendimento \n3- Logout\n4- Consultar atendimentos:\nR: "))
             if menu == 1:
                 print ("")
             elif menu == 2:
-                marcarAtendimento()
-            
+                print ("")
             elif menu == 3:
                 pass
             elif menu == 4:
@@ -391,7 +426,7 @@ def acesso():
             nome_pessoa = dados_usuario["objeto"].getNome()
             print("Login realizado!\n")
             time.sleep(0.7)
-            print(f"Olá, {tipo_usuario} {nome_pessoa} ")
+            print(f"Olá, {nome_pessoa} - {tipo_usuario}")
             time.sleep(0.5)
             menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
             if menu == 5:
@@ -401,11 +436,17 @@ def acesso():
         elif dados_usuario["tipo"] == "1":
             nome_pessoa = dados_usuario["objeto"].getNome()
             print("Login realizado!\n")
-            print(f"Olá, {tipo_usuario} {nome_pessoa} ")
+            print(f"Olá, {nome_pessoa} - {tipo_usuario}")
             time.sleep(0.5)
-            menu = int(input("1 -  \n2- Consultar atendimentos: \n3-  \n\nR: "))
-            if menu == 1:
-                print ("asdasd")
+            try:
+                menu = int(input("\n1- Consultar atendimentos / R: "))
+                if menu == 1:
+                    print ("Área ainda não disponivel.")
+                else:
+                    print("Insira uma opção válido.")
+            except ValueError:
+                print("Insira um valor válido.")
+
 
     else:
         print("\nUsuário ou senha incorretos.")
