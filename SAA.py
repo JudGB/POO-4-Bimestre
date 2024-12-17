@@ -17,7 +17,6 @@ usuarios = []
 dias = []
 dominios = ["gmail.com", "outlook.com", "hotmail.com", "yahoo.com", "icloud.com", "aol.com", "mail.com", "ifro.edu.br", "estudante.ifro.edu.br"]
 validosNOME = ascii_letters + " áéíóúôâãõ"
-validosEMAIl = ascii_letters + "123456789@. -_+/?=&;"
 
 # Home
 def home():
@@ -125,7 +124,7 @@ def marcarAtendimento(aluno, professor):  # vai ter q receber o professor e o al
                 dia1 = date(ano, mes, dia)
                 data = f"{dia}/{mes}/{ano}"
                 print(dia1, data)
-                var = calendar.day_name[dia1.weekday()]
+                var = calendar.day_nome[dia1.weekday()]
 
                 if verificacaoDIA(data):
                     print("Dia já cadastrado")
@@ -184,14 +183,14 @@ def marcarAtendimento(aluno, professor):  # vai ter q receber o professor e o al
     professor.adicionarAtendimentos(atendimento)
     aluno.adicionarAtendimentos(atendimento)
 
-def nome(name): #def limitando a string - felipe
+def verNome(nome): #def limitando a string - felipe
     min = 4
-    if len(name) < min:
+    if len(nome) < min:
         raise TamanhoNome
     else:
-        return name
-def email(email):
-    min1 = 2
+        return nome
+def verEmail(email): #def definindo o tamanho do email
+    min1 = 15
     max = 64
     if len(email) > max or len(email) < min1:
         raise TamanhoEmail
@@ -214,10 +213,10 @@ def registrar():
 # Nome // felipe 2
     while True:
         try:
-            name = input("Digite seu nome: ")
-            name = name.strip()
-            if all(l in validosNOME for l in name) and ' ' in name:
-                nome(name)
+            nome = input("Digite seu nome: ")
+            nome = nome.strip()
+            if all(l in validosNOME for l in nome) and ' ' in nome:
+                verNome(nome)
                 break
             else:
                 print("Por favor digite um nome válido (nome e sobrenome)")
@@ -254,42 +253,44 @@ def registrar():
 # Email - felipe 3
     while True:
         try:
-            min = 2
-            max = 64
             email = input("Digite seu email: ")
-            if any(dominio not in email for dominio in dominios):
-                print("\nDomínio inválido. Tente novamente.\n")
-                continue
-
+            verEmail(email)
+            if "@" not in email and "." not in email:
+                raise EmailError
             elif verificacaoEMAIL(email):
-                print("\nEmail já registrado. Tente novamente.\n")
+                print("\nEmail já registrado. Tente novamente.")
                 continue
-
-            elif "@" not in email and "." not in email:
-                print("Email inválido. Tente novamente.")
-                continue
-
             elif email.index("@") == 0:
-                print("Email inválido. Tente novamente.")
+                raise EmailError
+            elif any(dominio in email for dominio in dominios):
+                print("\n>>Email cadastrado com sucesso.")
+                break
+            else:
+                print("Domínio não reconhecido pelo sistema. Tente novamente.\n")
                 continue
 
-            else:
-                print(">>Email cadastrado com sucesso.\n")
-                break
         except TamanhoEmail:
-            print("")
+            print("Número de caracteres inválido.")
+            continue
+        except EmailError:
+            print("Email Inválido. Tente novamente.")
 
-
-        else:
-            break
+        finally:
+            time.sleep(0.2)
+            print("Carregando...\n")
+            time.sleep(1.2)
 
 # Telefone
     while True:
-        telefone = input("Digite seu telefone: ")
+        telefone = input("Digite seu número de telefone, no formato XX XXXXX-XXXX: ")
+        telefone = telefone.replace(" ", "")
+        telefone = telefone.replace("-", "")
         if verificacaoTELEFONE(telefone):
             print("\nTelefone já registrado. Tente novamente.\n")
             continue
-
+        elif len(telefone) < 11:
+            print("Número com caracteres inválidos.")
+            continue
         else:
             break
 
@@ -397,7 +398,7 @@ def acesso():
             dados_usuario = user
             break
 
-# Acesso Aluno
+    # Acesso Aluno
     if dados_usuario:
         tipo_usuario = "Aluno" if dados_usuario["tipo"] == "1" \
             else "Professor" if dados_usuario["tipo"] == "2" \
@@ -409,44 +410,74 @@ def acesso():
             time.sleep(0.7)
             print(f"Olá, {nome_pessoa} - {tipo_usuario}")
             time.sleep(0.5)
-            menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
+            while True:
+                try:
+                    menu = int(input(
+                        "1- Exibir dados do perfil \n2- Marcar atendimento \n3- Consultar atendimentos\n4- Logout\n5- Sair do sistema\nR: "))
+                    if 1 <= menu <= 3:
+                        raise SistemaEmProgresso
+                    if menu == 4:
+                        home()
+                        break
+                    if menu == 5:
+                        exit()
+                except:
+                    print("\n404 Error. Sistema em progresso.\n")
 
-            if menu == 1:
-                menu = int(input("1- Exibir dados do perfil \n2- Marcar atendimento \n3- Logout\n4- Consultar atendimentos:\nR: "))
-            if menu == 1:
-                print ("")
-            elif menu == 2:
-                print ("")
-            elif menu == 3:
-                pass
-            elif menu == 4:
-                pass
-# Acesso Professor
+                finally:
+                    time.sleep(0.2)
+                    print("Retornando...")
+                    time.sleep(1.2)
+
+        # Acesso Professor
         elif dados_usuario["tipo"] == "2":
             nome_pessoa = dados_usuario["objeto"].getNome()
             print("Login realizado!\n")
             time.sleep(0.7)
             print(f"Olá, {nome_pessoa} - {tipo_usuario}")
             time.sleep(0.5)
-            menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: "))
-            if menu == 5:
-                exit()
+            while True:
+                try:
+                    menu = int(input(
+                        "1- Exibir dados do perfil \n2- Marcar atendimento \n3- Consultar atendimentos\n4- Logout\n5- Sair do sistema\nR: "))
+                    if 1 <= menu <= 3:
+                        raise SistemaEmProgresso
+                    if menu == 4:
+                        home()
+                        break
+                    if menu == 5:
+                        exit()
+                except:
+                    print("\n404 Error. Sistema em progresso.\n")
 
-# Acesso Administrador
-        elif dados_usuario["tipo"] == "1":
+                finally:
+                    time.sleep(0.2)
+                    print("Retornando...")
+                    time.sleep(1.2)
+
+        # Acesso Administrador
+        elif dados_usuario["tipo"] == "3":
             nome_pessoa = dados_usuario["objeto"].getNome()
             print("Login realizado!\n")
             print(f"Olá, {nome_pessoa} - {tipo_usuario}")
             time.sleep(0.5)
-            try:
-                menu = int(input("\n1- Consultar atendimentos / R: "))
-                if menu == 1:
-                    print ("Área ainda não disponivel.")
-                else:
-                    print("Insira uma opção válido.")
-            except ValueError:
-                print("Insira um valor válido.")
+            while True:
+                try:
+                    menu = int(input("1- Exibir dados do perfil \n2- Marcar atendimento \n3- Consultar atendimentos\n4- Logout\n5- Sair do sistema\nR: "))
+                    if 1 <= menu <= 3:
+                        raise SistemaEmProgresso
+                    if menu == 4:
+                        home()
+                        break
+                    if menu == 5:
+                        exit()
+                except:
+                    print("\n404 Error. Sistema em progresso.\n")
 
+                finally:
+                    time.sleep(0.2)
+                    print("Retornando...")
+                    time.sleep(1.2)
 
     else:
         print("\nUsuário ou senha incorretos.")

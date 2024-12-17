@@ -66,9 +66,8 @@ class PessoaIFRO:  # mãe
             f"Meu nome: {self.__nome}\nIdade: {self.__idade}\nCPF: {self.__cpf}\nEmail: {self.__email}."
         )
 class Prof(PessoaIFRO): #prof
-    def __init__(self, nome: str, idade: int, cpf: int, email: str, telefone: str, curso: str, materia: str):
+    def __init__(self, nome: str, idade: int, cpf: int, email: str, telefone: str, curso: str):
         self.__curso = curso
-        self.__materia = materia    
         self.__atendimentos = []
         super().__init__(nome, idade, cpf, email,telefone)
 
