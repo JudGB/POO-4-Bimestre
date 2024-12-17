@@ -14,6 +14,7 @@ usuarios = []
 dias = []
 albtMai = list(string.ascii_uppercase + " ÁÃÂÉÊÔÕÍ")
 albtMin = list(string.ascii_lowercase + " áãâéêôõí")
+DDDs = ["11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22", "24", "27", "28", "31", "32", "33", "34", "35", "37", "38", "41", "42", "43", "44", "45", "46", "47", "48", "49", "51", "53", "54", "55", "61", "62", "64", "65", "66", "67", "68", "69", "71", "73", "74", "75", "77", "79", "81", "82", "83", "84", "85", "86", "87", "88", "89", "91", "92", "93", "94", "95", "96", "97", "98", "99"]
 
 # Home
 def home():
@@ -198,14 +199,21 @@ def registrar():
     while True:
         try:
             nome = str(input("Digite seu nome: "))
+            nome = nome.strip()
             if not all(carac in albtMin or carac in albtMai for carac in nome):
                 raise ValueError
+
+            elif nome == "":
+                raise NomeEspacoError
 
             else:
                 break
 
         except ValueError:
             print ("Nome inválido (Deve-se usar apenas letras)")
+
+        except NomeEspacoError:
+            print ("O nome não pode ser apenas um espaço")
 
         except:
             print ("Ocorreu um erro")
@@ -237,39 +245,95 @@ def registrar():
             if verificacaoCPF(cpf):
                 print("\nCPF já registrado. Tente novamente.\n")
                 continue
-        
+
             cpfNums = cpf.replace(".", "").replace("-", "")
             if not cpfNums.isdigit():
                 raise ValueError
+
+            elif "-" not in cpf or "." not in cpf:
+                raise FaltaCaracterError
             
-            if len(cpfNums) != 11:
-                raise TamanhoCpfError
+            elif len(cpfNums) != 11:
+                raise TamanhoError
 
             else:  
                 break
 
-        except TamanhoCpfError:
+        except TamanhoError:
             print ("Cpf deve conter 11 números")
 
         except ValueError:
             print ("O Cpf deve conter apenas números.")
 
+        except FaltaCaracterError:
+            print ("Digite o Cpf no formato (XXX.XXX.XXX-XX)")
+
+        except:
+            print ("Ocorreu um erro")
+
 # Email
     while True:
-        email = input("Digite seu email: ")
-        if verificacaoEMAIL(email):
-            print("\nEmail já registrado. Tente novamente.\n")
-            continue
+        try:
+            email = input("Digite seu email: ")
+            email = email.strip()
+            if verificacaoEMAIL(email):
+                print("\nEmail já registrado. Tente novamente.\n")
+                continue
+            
+            elif "@" not in email or "." not in email:
+                raise FaltaCaracterError
 
-        else:
-            break
+            elif email.index("@") == 0:
+                raise EmailSemUsuarioError
+
+            else:
+                break
+        
+        except FaltaCaracterError:
+            print ("O email deve conter '@' e '.'")
+
+        except EmailSemUsuarioError:
+            print ("Seu email deve conter um usuário")
 
 # Telefone
     while True:
-        telefone = input("Digite seu telefone: ")
-        if verificacaoTELEFONE(telefone):
-            print("\nTelefone já registrado. Tente novamente.\n")
-            continue
+        try:
+            telefone = input("Digite seu telefone (no formato (XX)XXXXX-XXXX)): ")
+            if verificacaoTELEFONE(telefone):
+                print("\nTelefone já registrado. Tente novamente.\n")
+                continue
+            
+            telNums = telefone.replace("(", "").replace(")", "").replace("-", "")
+            ddd = telNums[0] + telNums[1]
+            if not telNums.isdigit():
+                raise ValueError
+
+            elif "-" not in telefone or "(" not in telefone or ")" not in telefone:
+                raise FaltaCaracterError
+            
+            elif len(telNums) != 11:
+                raise TamanhoError
+
+            elif ddd not in DDDs:
+                raise DddError
+
+            else:  
+                break
+
+        except TamanhoError:
+            print ("O telefone deve conter 11 números")
+
+        except ValueError:
+            print ("O telefone deve conter apenas números (Sem espaços).")
+
+        except FaltaCaracterError:
+            print ("Digite o telefone no formato (XXX.XXX.XXX-XX)")
+
+        except DddError:
+            print ("DDD Inválido")
+
+        except:
+            print ("Ocorreu um erro")
 
         else:
             break

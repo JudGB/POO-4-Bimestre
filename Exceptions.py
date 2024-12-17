@@ -1,5 +1,14 @@
-class TamanhoCpfError(Exception):
+class TamanhoError(Exception):
     pass
 
-class NomeError(Exception):
+class FaltaCaracterError(Exception):
+    pass
+
+class EmailSemUsuarioError(Exception):
+    pass
+
+class NomeEspacoError(Exception):
+    pass
+
+class DddError(Exception):
     pass
