@@ -191,13 +191,41 @@ def registrar():
     except (ValueError,TypeError):
         print("Você digitou não digitou um inteiro de 0 a 3.")
         registrar()
-    
-
-    
-#fazer tratamento aq
 # Nome 
-    nome = input("Digite seu nome: ")
-    time.sleep(0.5)
+    while True:
+        temnumero = False
+        try:
+            nome = input("Digite seu nome: ")
+            time.sleep(1.0)
+            if len(nome) < 5:
+                s_n = int(input("Seu nome é pequeno. Certeza que o digitou corretamente? \n1- Sim 2- Não \nR:"))
+                time.sleep(0.5)
+                if s_n == 1:
+                    print("Ok, salvando seu nome...")
+                    time.sleep(0.5)
+                elif s_n == 2:
+                    print("Ok, digite novamente.")
+                    time.sleep(0.5)
+                else:
+                    raise ValueError
+            for carac in nome:
+                if carac.isnumeric():
+                    temnumero = True
+            if temnumero == True:
+                s_n = int(input("Seu nome possui alguns números. Certeza que  o digitou corretamente?  \n1- Sim 2- Não\nR:"))
+                time.sleep(0.5)
+                if s_n == 1:
+                    print("Ok, salvando seu nome...")
+                    time.sleep(0.5)
+                elif s_n == 2:
+                    print("Ok, digite novamente.")
+                    time.sleep(0.5)
+            else:
+                break
+        except:
+            print("Digite 1 para Não e 2 para Sim.") 
+            time.sleep(0.5)
+
 
 # Idade
     while True:
@@ -275,13 +303,30 @@ def registrar():
 
 # Usuário
 #deixar digitar qualquer user ja q nao ta usando db, focar mais na senha
-    usuario = input("\nDigite seu usuário: ")
-    time.sleep(0.5)
+    while True: 
+        try:
+            usuario = input("\nDigite seu usuário: ")
+            for user in usuarios:
+                if user["usuario"] == usuario:
+                    print("O usuário informado já existe. Tente novamente.")
+                    time.sleep(0.5)
+            if len(usuario) <= 5:
+                raise ValueError
+            else:
+                break
+        except ValueError:
+            print("Seu usuário é muito pequeno.\nDigite-o novamente.")
+            time.sleep(0.5)
+        except:
+            print("Tivemso algum problema, tente digitar seu usuário novamente.")
+            time.sleep(0.5)
+        finally:
+            print("Lembre-se: mais importante que o usuário, somente a senha. \nCuide do seu usuário -_-")
+            time.sleep(0.5)
+
+        
     
-    for user in usuarios:
-        if user["usuario"] == usuario:
-            print("O usuário informado já existe. Tente novamente.")
-            registrar()
+    
 
 # Senha
     while True:
@@ -408,7 +453,6 @@ def acesso():
             time.sleep(0.5)
             menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Logout\n4- Sair\nR: "))
             if menu == 1:
-                #nome, idade, cpf, email, telefone, matricula, curso
                 print(dados_usuario)
             elif menu == 2:
                 aluno = input("Qual o nome do aluno relacionado ao atendimento?")
