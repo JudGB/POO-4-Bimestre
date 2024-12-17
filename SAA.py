@@ -1,7 +1,7 @@
 from Classes import *
 from Exceptions import *
-from string import ascii_letters
 import time
+import string
 
 # 2º Ano B Vespertino Informática
 # Alunos:
@@ -12,7 +12,8 @@ import time
 
 usuarios = []
 dias = []
-letras = ascii_letters + " áéíóúôâãõ"
+albtMai = list(string.ascii_uppercase + " ÁÃÂÉÊÔÕÍ")
+albtMin = list(string.ascii_lowercase + " áãâéêôõí")
 
 # Home
 def home():
@@ -194,18 +195,38 @@ def registrar():
         registrar()
 
 # Nome
-    nome = input("Digite seu nome: ")
+    while True:
+        try:
+            nome = str(input("Digite seu nome: "))
+            if not all(carac in albtMin or carac in albtMai for carac in nome):
+                raise ValueError
+
+            else:
+                break
+
+        except ValueError:
+            print ("Nome inválido (Deve-se usar apenas letras)")
+
+        except:
+            print ("Ocorreu um erro")
 
 # Idade
     while True:
         try:
             idade = int(input("Digite sua idade: "))
-            if idade <= 14 or idade >= 75:
-                print("\nInsira um número válido (Maior que 14 e menor que 75)\n")
+            if tipo == "1":
+                if idade <= 14 or idade >= 21:
+                    print("\nInsira uma idade válida (Maior que 14 e menor que 21)\n")
+                
+                else: 
+                    break
+            
+            elif tipo == "2" or tipo == "3":
+                if idade <= 18 or idade >= 75:
+                    print("\nInsira uma idade válida (Maior que 18 e menor que 75)\n")
 
-            else:
-                break
-
+                else: 
+                    break
         except:
             print("Insira um número!")
 
@@ -217,17 +238,17 @@ def registrar():
                 print("\nCPF já registrado. Tente novamente.\n")
                 continue
         
-            cpfNums = cpf.replace('.', '').replace('-', '')
+            cpfNums = cpf.replace(".", "").replace("-", "")
             if not cpfNums.isdigit():
                 raise ValueError
             
             if len(cpfNums) != 11:
-                raise TamanhoCpf
+                raise TamanhoCpfError
 
             else:  
                 break
 
-        except TamanhoCpf:
+        except TamanhoCpfError:
             print ("Cpf deve conter 11 números")
 
         except ValueError:
