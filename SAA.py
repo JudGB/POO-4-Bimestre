@@ -488,17 +488,17 @@ def acesso():
                         print (f"Telefone: {telefone_pessoa}\n")
                         time.sleep(0.7)
 
-                    elif menu == 2:
+                    if menu == 2:
                         raise EmProcessoError
                         marcarAtendimento()
 
-                    elif menu == 3:
+                    if menu == 3:
                         raise EmProcessoError
 
-                    elif menu == 4:
+                    if menu == 4:
                         raise EmProcessoError
 
-                    elif menu == 5:
+                    if menu == 5:
                         sys.exit()
 
                 except EmProcessoError:
@@ -530,17 +530,17 @@ def acesso():
                         print (f"Telefone: {telefone_pessoa}\n")
                         time.sleep(0.7)
 
-                    elif menu == 2:
+                    if menu == 2:
                         raise EmProcessoError
                         marcarAtendimento()
                     
-                    elif menu == 3:
+                    if menu == 3:
                         raise EmProcessoError
                     
-                    elif menu == 4:
+                    if menu == 4:
                         raise EmProcessoError
                     
-                    elif menu == 5:
+                    if menu == 5:
                         sys.exit()
                 
                 except EmProcessoError:
@@ -571,17 +571,17 @@ def acesso():
                         print (f"Telefone: {telefone_pessoa}\n")
                         time.sleep(0.7)
 
-                    elif menu == 2:
+                    if menu == 2:
                         raise EmProcessoError
                         marcarAtendimento()
                     
-                    elif menu == 3:
+                    if menu == 3:
                         raise EmProcessoError
                     
-                    elif menu == 4:
+                    if menu == 4:
                         raise EmProcessoError
                     
-                    elif menu == 5:
+                    if menu == 5:
                         sys.exit()
                 
                 except EmProcessoError:
