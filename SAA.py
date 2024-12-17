@@ -1,6 +1,6 @@
 from classes import *  #importante nossas classes
 import time #utilizando a biblioteca time, para usar o método sleep
-
+from exceptCPF import *
 usuarios = [] #coleção 1 
 dias = [] #coleção 2 
 dados_usuario = {}
@@ -218,14 +218,16 @@ def registrar():
         try:
             cpf = int(input("Digite seu CPF: "))
             time.sleep(0.5)
+            if validandoCpf(cpf) != True:
+                pass
+
             if verificacaoCPF(cpf):
                 print("\nCPF já registrado. Tente novamente.\n")
                 continue
-
             else:
                 break
 
-        except:
+        except ExcecaoCPFInvalido:
             print("\nInsira um valor válido.\n")
 
 # Email
