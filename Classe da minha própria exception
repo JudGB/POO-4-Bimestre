@@ -1,0 +1,2 @@
+class PreguiçaExcept(Exception):
+    pass
