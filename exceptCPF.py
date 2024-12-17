@@ -4,10 +4,10 @@ class ExcecaoCPFInvalido(Exception):
 def validandoCpf(CPF):
     if len(CPF)  != 11:
         print("\nseu cpf deve conter 11 digitos.")
-        raise ExcecaoCPFInvalido()
+        return False
     elif CPF.isnumeric() == False:
         print("\nseu cpf deve conter apenas números.")
-        raise ExcecaoCPFInvalido()
+        return False
     else:
         print("CPF válido")
         return True 

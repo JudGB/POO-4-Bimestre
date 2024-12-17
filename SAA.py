@@ -3,31 +3,26 @@ import time #utilizando a biblioteca time, para usar o método sleep
 from exceptCPF import *
 usuarios = [] #coleção 1 
 dias = [] #coleção 2 
-dados_usuario = {}
+dados_usuario = {} #coleção 3
 
 # Home
 def home():
-    try:
-        option = int(input("\n1- Login | 2- Registrar | 0- Sair\nR: "))
-        if option == 1:
-            acesso()
-        elif option == 2:
-            registrar()
-        elif option == 0:
-            print("Saindo... Até a próxima!")
-            raise SystemExit
-        elif option < 0 and option > 2:
-            raise ValueError
-    except SystemExit:
-        exit()
-    except:
+    while True:
+        try:
+            option = int(input("\n1- Login | 2- Registrar | 0- Sair\nR: "))
+            if option == 1:
+                acesso()
+            elif option == 2:
+                registrar()
+            elif option == 0:
+                print("Saindo... Até a próxima!")
+                break
+            elif option < 0 or option > 2:
+                raise ValueError
+        except:
             print("\nDigite apenas *números* inteiros de 0 a 2.")
-            home()
+       
     
-
-
-
-
 # Função de verificão do dia
 def verificacaoDIA(data):  # função para verificar se pro dia digitado já existe um atendimento // felipe w/ celso
     for datas in dias:
@@ -90,15 +85,9 @@ def escolher_curso():
         return escolher_curso()
 
 
-def marcarAtendimento(aluno, professor):  # vai ter q receber o professor e o aluno como parametro aqui
-    if aluno.getcurso() != professor.getcurso():
-        curso = input("Qual o curso que vai estar relacionado ao atendimento marcado?")
-    else:
-        curso = aluno.getcurso()
-
-    materia = professor.getmateria()
-    print(f"{materia}")
-
+def marcarAtendimento(aluno, professor): 
+    curso = aluno.getcurso()
+    materia = input("Qual a matéria relacionada ao atendimento?\nR:")
     sair = False
     while True:
         if sair == True:
@@ -109,19 +98,16 @@ def marcarAtendimento(aluno, professor):  # vai ter q receber o professor e o al
             if atendimentomarcar == 0:
                 print("Saindo...")
                 sair = True
-                break
-
             elif atendimentomarcar == 1:
-                dia, mes, ano = input("Quer marcar seu atendimento para qual dia? ").split("/")
+                dia, mes, ano = input("Quer marcar seu atendimento para qual dia?\nModelo: 00/00/0000\nR: ").split("/")
                 dia = int(dia)
                 mes = int(mes)
                 ano = int(ano)
                 dia1 = date(ano, mes, dia)
                 data = f"{dia}/{mes}/{ano}"
-                print(dia1, data)
                 var = calendar.day_name[dia1.weekday()]
 
-                if verificacaoDIA(data):
+                if verificacaoDIA(data) == True:
                     print("Dia já cadastrado")
                     print("Veja os dias já cadastrados")
                     for datas in dias:
@@ -131,23 +117,22 @@ def marcarAtendimento(aluno, professor):  # vai ter q receber o professor e o al
                     dias.append(data)
                     if var == "Monday":
                         print(f"Nova data marcada para: Segunda-Feira, {data}")
-                        print(dias)
+                       
 
                     elif var == "Tuesday":
-                        print(f"Nova data marcada para: Segunda-Feira, {data}")
-                        print(dias)
+                        print(f"Nova data marcada para: Terça-Feira, {data}")
+
 
                     elif var == "Wednesday":
-                        print(f"Nova data marcada para: Segunda-Feira, {data}")
-                        print(dias)
+                        print(f"Nova data marcada para: Quarta-Feira, {data}")
+
 
                     elif var == "Thursday":
-                        print(f"Nova data marcada para: Segunda-Feira, {data}")
-                        print(dias)
+                        print(f"Nova data marcada para: Quinta-Feira {data}")
 
                     elif var == "Friday":
-                        print(f"Nova data marcada para: Segunda-Feira, {data}")
-                        print(dias)
+                        print(f"Nova data marcada para: Sexta-Feira, {data}")
+                  
 
         except:
             print("Insira um valor válido.")
@@ -177,6 +162,9 @@ def marcarAtendimento(aluno, professor):  # vai ter q receber o professor e o al
     atendimento = Atendimento(curso, materia, horario, data, professor, aluno)
     professor.adicionarAtendimentos(atendimento)
     aluno.adicionarAtendimentos(atendimento)
+    
+def verMyAtendimentos(pessoa):
+    pessoa.consultarAtendimentos()
 
 # Registro
 def registrar():
@@ -196,18 +184,6 @@ def registrar():
         temnumero = False
         try:
             nome = input("Digite seu nome: ")
-            time.sleep(1.0)
-            if len(nome) < 5:
-                s_n = int(input("Seu nome é pequeno. Certeza que o digitou corretamente? \n1- Sim 2- Não \nR:"))
-                time.sleep(0.5)
-                if s_n == 1:
-                    print("Ok, salvando seu nome...")
-                    time.sleep(0.5)
-                elif s_n == 2:
-                    print("Ok, digite novamente.")
-                    time.sleep(0.5)
-                else:
-                    raise ValueError
             for carac in nome:
                 if carac.isnumeric():
                     temnumero = True
@@ -220,6 +196,17 @@ def registrar():
                 elif s_n == 2:
                     print("Ok, digite novamente.")
                     time.sleep(0.5)
+            elif len(nome) < 5:
+                s_n = int(input("Seu nome é pequeno. Certeza que o digitou corretamente? \n1- Sim 2- Não \nR:"))
+                time.sleep(0.5)
+                if s_n == 1:
+                    print("Ok, salvando seu nome...")
+                    time.sleep(0.5)
+                elif s_n == 2:
+                    print("Ok, digite novamente.")
+                    time.sleep(0.5)
+                else:
+                    raise ValueError
             else:
                 break
         except:
@@ -244,20 +231,17 @@ def registrar():
 # CPF
     while True:
         try:
-            cpf = int(input("Digite seu CPF: "))
+            cpf = input("Digite seu CPF: ")
             time.sleep(0.5)
             if validandoCpf(cpf) != True:
-                pass
-
+                raise ExcecaoCPFInvalido
             if verificacaoCPF(cpf):
                 print("\nCPF já registrado. Tente novamente.\n")
                 continue
             else:
                 break
-
         except ExcecaoCPFInvalido:
-            print("\nInsira um valor válido.\n")
-
+            print("\nCPF Invalido\n")
 # Email
     while True:
         email = input("Digite seu email: ")
@@ -451,19 +435,23 @@ def acesso():
             time.sleep(0.7)
             print(f"Olá, {nome_pessoa}\nBem-Vindo. ")
             time.sleep(0.5)
-            menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Logout\n4- Sair\nR: "))
-            if menu == 1:
-                print(dados_usuario)
-            elif menu == 2:
-                aluno = input("Qual o nome do aluno relacionado ao atendimento?")
-                professor = input("Qual o nome do professor relacionado ao atendimento?")
-                marcarAtendimento(aluno,professor)
-            elif menu == 3:
-                print("deslogando...")
-                home()
-            elif menu == 4:
-                print("saindo...")
-                exit()
+            while True:
+                menu = int(input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar Atendimentos \n4- Logout\n5- Sair\nR: "))
+                time.sleep(0.5)
+                if menu == 1:
+                    print(f"\n{dados_usuario}\n")
+                    time.sleep(0.5)
+                elif menu == 2:
+                    professor = input("Qual o nome do professor relacionado ao atendimento?\nR:")
+                    marcarAtendimento(dados_usuario["objeto"],professor)
+                elif menu == 3:
+                    verMyAtendimentos()
+                elif menu == 4:
+                    print("deslogando...")
+                    home()
+                elif menu == 3:
+                    print("saindo...")
+                    exit()
 # Acesso Professor
     elif dados_usuario["tipo"] == 2:
             nome_pessoa = dados_usuario["objeto"].getNome()
@@ -471,22 +459,24 @@ def acesso():
             time.sleep(0.7)
             print(f"Olá, {nome_pessoa} ")
             time.sleep(0.5)
-            menu = input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: ")
-            if menu == "1":
-                print(dados_usuario)
-            elif menu == "2":
-                aluno = input("Qual o nome do aluno relacionado ao atendimento?")
-                professor = input("Qual o nome do professor relacionado ao atendimento?")
-                marcarAtendimento(aluno,professor)
-            elif  menu == "3":
-                #consultarAtendimento()
-                pass
-            elif menu == "4":
-                print("deslogando...")
-                home()
-            elif menu == "5":
-                print("saindo...")
-                exit()
+            while True:
+                menu = input("1- Exibir dados do perfil\n2- Marcar atendimento\n3- Consultar atendimentos\n4- Logout\n5- Sair\nR: ")
+                time.sleep(0.5)
+                if menu == "1":
+                    print(dados_usuario)
+                elif menu == "2":
+                    aluno = input("Qual o nome do aluno relacionado ao atendimento?")
+                    professor = input("Qual o nome do professor relacionado ao atendimento?")
+                    marcarAtendimento(aluno,professor)
+                elif  menu == "3":
+                    verMyAtendimentos()
+                    
+                elif menu == "4":
+                    print("deslogando...")
+                    home()
+                elif menu == "5":
+                    print("saindo...")
+                    exit()
 
 # Acesso Administrador
     elif dados_usuario["tipo"] == 3:
@@ -494,18 +484,18 @@ def acesso():
             print("Login realizado!\n")
             print(f"Olá, {nome_pessoa} ")
             time.sleep(0.5)
-            menu = int(input("1 - Exibir Dados do Perfil  \n2- Consultar atendimentos: \n3- Logout\n4- Sair\nR: "))
-            if menu == "1":
-                print(dados_usuario)
-            elif menu == "2":
-                #consultarAtendimento()
-                pass
-            elif menu == "3":
-                print("deslogando...")
-                home()
-            elif menu == "4":
-                print("saindo...")
-                exit()
+            while True:
+                menu = int(input("1 - Exibir Dados do Perfil \n2- Logout\n3- Sair\nR: "))
+                time.sleep(0.5)
+                if menu == "1":
+                    print(dados_usuario)
+                    pass
+                elif menu == "2":
+                    print("deslogando...")
+                    home()
+                elif menu == "3":
+                    print("saindo...")
+                    exit()
     else:
         print("\nUsuário ou senha incorretos.")
         acesso()

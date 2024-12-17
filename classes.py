@@ -2,6 +2,7 @@ import calendar
 from datetime import *
 import time
 
+
 class PessoaIFRO:  # mãe
     def __init__(self, nome: str, idade: int, cpf: int, email: str, telefone: str):
         self.__nome = nome
@@ -64,11 +65,32 @@ class Prof(PessoaIFRO): #prof
         super().exibir()
         print(f"\n\nCurso: {self.__curso}.")
 
-    def consultarAtendimento(self):
-        print("Seu atendimento está [AQUI TEM QUE SER O OBJETO DA CLASE ATENDIMENTO OU ALGO ASSIM]...")
-
-    def registrarHorario(self):
-        print("continua ou descontinua")
+    def consultarAtendimentos(self):
+        if len(self.__atendimentos) > 0:
+            print("Seus atendimentos:")
+            for atendimento in self.__atendimentos:
+                print(atendimento)
+            while True:
+                print("Deseja desmarcar algum atendimento? 1-Sim 2-Não")
+                s_n = input("R:")
+                if s_n == "2":
+                    print("Ok, saindo...")
+                    time.sleep(1)
+                    break
+                elif s_n == "1":
+                    print("OK, vamos repassar os atendimentos e você diga o número do que você quer excluir.")
+                    for c in range (len(self.__atendimentos)):
+                        print(f"{c}-{self.__atendimentos[c]}")
+                        time.sleep(1)
+                    numAtend = int(input("Digite o número do atendimento:\nR:"))
+                    for c in range (len(self.__atendimentos)):
+                        print(f"{c}-{self.__atendimentos[c]}")
+                        if c == numAtend:
+                            self.__atendimentos.remove(c)
+                            print(f"Seu atendimento número {c} para as {self.__atendimentos[c]} foi removido!")
+                            time.sleep(1)
+        else:
+            print("Você não tem atendimentos marcados.")             
 
     def getcurso(self):
         return self.__curso
